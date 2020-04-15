@@ -168,6 +168,11 @@ class ManagePersonnel extends Component {
                 break;
         }
     }
+    timetables=[
+        {classe:'IRT 1', timetable:{}},
+        {classe:'IRT 2', timetable:{}},
+        {classe:{idClasse:1, classe:'IRT 3'}, timetable:{}},
+    ]
 
     handleCreerClick=(e)=>{
         e.preventDefault()
@@ -175,7 +180,19 @@ class ManagePersonnel extends Component {
           if(this.state.newPersonnel.role==='coordonateur' && this.state.newPersonnelCoordoClass!==''){
               
             let coordoClasses = this.props.classes.filter(classe=>classe.filiere.nomFiliere===this.state.newPersonnelCoordoClass)
-            let CoordoUploadObject={matriculePersonnel:this.state.newPersonnel.matricule, classes:coordoClasses}
+            
+            /*
+                I've prepared the timetables array in the format you requested for(using the id's ).
+                so this particular one is not to be modified for the id
+            */
+            let timetables=this.props.classes.map(classe=>{
+                if(classe.filiere.nomFiliere === this.state.newPersonnelCoordoClass){
+                    let classeObject = {classe:{idClasse:classe.idClasse, classe:classe.nomFiliere.filiere+' '+classe.niveau}, timetable:{}}
+                    return classeObject
+                }else return null
+            })
+
+            let CoordoUploadObject={matriculePersonnel:this.state.newPersonnel.matricule, classes:coordoClasses, timetables:timetables}
             /*
                 The object to be created in the personnel collection is: this.state.newPersonnel
                 The object to be created in the coordonateur collection is:coordoUploadObject

@@ -1,29 +1,19 @@
 const initState = {
-    timeTables: [{
-        _id:'DjakouWorld',
-        idCoordo:'KamdaWorld',
-        idClasse:'NtchamiWorld',
-        date_debut_semaine:'30/03/2020',
-        cours: [
-            {
-                tablePosition:1,
-                idCours:'TchanaWorld',
-                idSalle:'TchuenkamWorld',
-                NatureCours:'CM',
-                canceled:false
-            }
-        ],
-        history: []
-    }]
+    timetables: [
+        {idTimetable:1, classe:{idClasse:1, nomClasse:'IRT 2'}, tableHeader:{weekStart:'2020-04-20', weekEnd:'Sun Apr 26 2020'}, table:[
+            {index:1, debut:'08:00', fin:'12:00', mon:{cour:'IDE Wangun Parfait Pascal', salle:''}, tue:{cour:'IDE Wangun Parfait Pascal', salle:''}, wed:{cour:'', salle:''}, thur:{cour:'', salle:''}, fri:{cour:'', salle:''}, sat:{cour:'', salle:''}, sun:{cour:'', salle:''}},
+            {index:2, debut:'13:00', fin:'17:00', mon:{cour:'', salle:''}, tue:{cour:'', salle:''}, wed:{cour:'', salle:''}, thur:{cour:'', salle:''}, fri:{cour:'', salle:''}, sat:{cour:'', salle:''}, sun:{cour:'', salle:''}}
+        ]},
+    ]
 }
 
-const timeTableReducer = (state = initState, action)=>{
+const timetableReducer = (state = initState, action)=>{
     switch(action.type){
         case 'CREATE_TIMETABLE':
-            return{...state, timeTables:[...state.timeTables, ...action.payload]}
+            return{...state, timetables:[...state.timetables, ...action.payload]}
         default:
             return state
     }
 }
 
-export default timeTableReducer;
+export default timetableReducer;

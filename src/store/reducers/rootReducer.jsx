@@ -8,7 +8,8 @@ import FacultyReducer from './FacultyReducer';
 import ModuleReducer from './ModuleReducer';
 import PersonnelReducer from './PersonnelReducer';
 import RoleReducer from './RoleReducer';
-import TimeTableReducer from './TimeTableReducer';
+import TeacherReducer from './TeacherReducer';
+import TimetableReducer from './TimetableReducer';
 import TroncCommunReducer from './TroncCommunReducer';
 
 const rootReducer = combineReducers({
@@ -20,7 +21,8 @@ const rootReducer = combineReducers({
     Module: ModuleReducer,
     Personnel: PersonnelReducer,
     Role: RoleReducer,
-    TimeTable: TimeTableReducer,
+    Teacher: TeacherReducer,
+    Timetable: TimetableReducer,
     TroncCommun: TroncCommunReducer
 })
 
