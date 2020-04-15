@@ -34,7 +34,7 @@ class TimeTableFormat extends Component {
         ))
     }
 
-    getClasseCours=()=>this.props.cours.filter(cour=>cour.classe.includes(this.state.theClasse)).sort((a,b)=>(a.nomCours>b.nomCours)?1:-1).map(cour=><option key={cour.codeCours}>{cour.nomCours+'\n'+cour.nomEnseignant}</option>)
+    getClasseCours=()=>this.props.cours.filter(cour=>cour.classe.includes(this.state.theClasse)).sort((a,b)=>(a.nomCours>b.nomCours)?1:-1).map(cour=><option key={cour.codeCours}>{cour.nomCours+'_'+cour.nomEnseignant}</option>)
 
     handleLineDataChange=(lineNumber, e)=>{
         // let Day=day.split('_')[0]
