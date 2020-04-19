@@ -3,7 +3,7 @@ const initState = {
         idTeacher:1,
         idPersonnel:1,
         matriculePersonnel:'babatas',
-        classes: [{idClasse:1, nomClasse:'IRT 3'}, {idClasse:2, nomClasse:'IRT 2'}, {idClasse:3, nomClasse:'IRT 1'}],
+        toughtClasses: [{idClasse:1, nomClasse:'IRT 3'}, {idClasse:2, nomClasse:'IRT 2'}, {idClasse:3, nomClasse:'IRT 1'}],
     }]
 }
 

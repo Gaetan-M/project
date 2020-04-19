@@ -1,6 +1,6 @@
 const initState = {
     coordonateurs:[{
-        _id:'KamdaWorld',
+        idCoordonateur:'KamdaWorld',
         matriculePersonnel:'babatas',
         classes: ['IRT 3', 'IRT 2', 'IRT 1'],
         timetables:[

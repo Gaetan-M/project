@@ -7,14 +7,16 @@ import SignIn from './auth/signIn/pages/SignIn';
 import ForgotPassword from './auth/signIn/pages/ForgotPwd';
 // import Footer from './shared/UIElements/Footer'
 // import NewMatiere from './shared/components/NewMatiere';
-import CoordoTimeTable from './coordonateur/pages/CoordoTimeTable';
+// import CoordoTimeTable from './coordonateur/pages/CoordoTimeTable';
+import TeacherTimetable from './enseignant/TeacherTimetable';
 // import ClasseSettings from './secretaire/components/new module/ClasseSettings';
 // import Settings from './secretaire/pages/Settings';
 // import ManagePersonnel from './secretaire/components/manage personnel/ManagePersonnel'
 // import TeacherCourses from './secretaire/components/attribuerCoursEnseignant/TeacherCourses';
 // import ClasseCoordo from './coordonateur/components/ClasseCoordo';
 // import ClasseDefinir from './coordonateur/components/ClasseDefinir';
-// import TimeTableFormat from './coordonateur/components/TimeTableFormat';
+import TimeTableFormat from './coordonateur/components/TimeTableFormat';
+import Questionnaire from './enseignant/Questionnaire';
 // import TimeTableLine from './coordonateur/components/TimeTableLine';
 // import TimeTableFormat from './coordonateur/components/TimeTableFormat';
 
@@ -25,7 +27,7 @@ class App extends React.Component {
             <
             Switch >
             <
-            Route exact path = '/' > < CoordoTimeTable / > < /Route> <
+            Route exact path = '/' > < Questionnaire / > < /Route > <
             Route exact path = '/restpwd' > < ForgotPassword / > < /Route> <
             Route exact path = '/sendMail' > < SendMail / > < /Route> <
             Route exact path = '/signup' > < SignUp / > < /Route> <

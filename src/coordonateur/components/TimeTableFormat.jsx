@@ -23,10 +23,12 @@ class TimeTableFormat extends Component {
         ]
     }
 
-    findFiliereFaculty=()=>this.props.classes.find(classe=>classe.filiere.nomFiliere+' '+classe.niveau===this.state.theClasse).nomFaculty
+    findClassFaculty=()=>this.props.faculties.find(faculty=>{
+        return faculty.filieres.find(filiere=>filiere.nomFiliere===this.state.theClasse.split(' ')[0])
+    }).nomFaculty
 
     getSalleCours=()=>{
-        let classeFaculty=this.findFiliereFaculty()
+        let classeFaculty=this.findClassFaculty()
         return this.props.batiments.filter(batiment=>batiment.nomFaculty===classeFaculty).map(batiment=>(
             <optgroup key={batiment.nomBatiment} label={batiment.nomBatiment}>
                 {batiment.salles.map(salle=><option key={salle.nomSalle}>{salle.nomSalle}</option>)}
@@ -34,7 +36,9 @@ class TimeTableFormat extends Component {
         ))
     }
 
-    getClasseCours=()=>this.props.cours.filter(cour=>cour.classe.includes(this.state.theClasse)).sort((a,b)=>(a.nomCours>b.nomCours)?1:-1).map(cour=><option key={cour.codeCours}>{cour.nomCours+'_'+cour.nomEnseignant}</option>)
+    getClasseCours=()=>this.props.cours.filter(cour=>cour.classe.includes(this.state.theClasse)).sort((a,b)=>(a.nomCours>b.nomCours)?1:-1).map(cour=>{
+        return <option key={cour.codeCours} value={cour.nomCours+'_'+cour.idEnseignant+'_'+cour.nomEnseignant.split(' ')[0]}>{cour.nomCours+'_'+cour.nomEnseignant.split(' ')[0]}</option>
+    })
 
     handleLineDataChange=(lineNumber, e)=>{
         // let Day=day.split('_')[0]
@@ -46,6 +50,7 @@ class TimeTableFormat extends Component {
                 switch(e.target.id.split('_')[1]){
                     case 'cours':
                         lineObject={...lineObject, mon:{cour:e.target.value, salle:lineObject.mon.salle}}
+                        console.log(lineObject.mon.cour)
                         break
                     case 'salle':
                         lineObject={...lineObject, mon:{cour:lineObject.mon.cour, salle:e.target.value}}
@@ -218,6 +223,7 @@ class TimeTableFormat extends Component {
             <div>
                 <ClasseCoordo classes={this.getCoordoObject().classes.sort((a,b)=>(a>b)?1:-1)} handleDefinirClick={this.handleDefinirClick} handleModifierClick={this.handleModifierClick} />
                 {this.state.theClasse!==''?<div className='timetableBottom'>
+                    {console.log(this.findClassFaculty('IRT 2'))}
                     <ClasseDefinir theClasse={this.state.theClasse} handleInputChange={this.handleInputChange} fromDate={this.state.tableHeader.weekStart} toDate={this.state.tableHeader.weekEnd}/>
                     <TimeTableLine type='th' />
                     {this.showLines()}
@@ -238,6 +244,7 @@ const mapStateToProps=(state)=>{
         batiments: state.Batiment.batiments,
         classes: state.Classe.classes,
         faculties: state.Faculty.faculties,
+        timetables: state.Timetable.timetables
     }
 }
 
