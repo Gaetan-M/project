@@ -3,11 +3,11 @@ const initState = {
         { 
             index:1, codeModule:'UE0325',
             nomModule:'Programmation',
-            nomClasse:'IRT 2',
+            nomClasse:'IRT 3', idClasse:18,
             creditModule:6,
             matieres: [
-                {codeCours:'PROG0001', poids:0.6},
-                {codeCours:'PROG0002', poids:0.2},
+                {idCour:1, codeCours:'PROG0001', poids:0.6},
+                {idCour:1, codeCours:'PROG0002', poids:0.2},
             ]
         },
     ]

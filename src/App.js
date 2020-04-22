@@ -20,6 +20,9 @@ import Questionnaire from './enseignant/Questionnaire';
 import TeacherForum from './enseignant/TeacherForum';
 import FIles from './FIles'
 import TeacherNotes from './enseignant/TeacherNotes';
+import StudentTimetable from './etudiants/StudentTimetable';
+import StudentForum from './etudiants/StudentForum';
+import StudentNotes from './etudiants/StudentNotes';
 // import TimeTableLine from './coordonateur/components/TimeTableLine';
 // import TimeTableFormat from './coordonateur/components/TimeTableFormat';
 
@@ -30,7 +33,7 @@ class App extends React.Component {
             <
             Switch >
             <
-            Route exact path = '/' > < TeacherNotes / > < /Route > <
+            Route exact path = '/' > < StudentNotes / > < /Route > <
             Route exact path = '/restpwd' > < ForgotPassword / > < /Route> <
             Route exact path = '/sendMail' > < SendMail / > < /Route> <
             Route exact path = '/signup' > < SignUp / > < /Route> <
