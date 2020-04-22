@@ -17,7 +17,9 @@ import TeacherTimetable from './enseignant/TeacherTimetable';
 // import ClasseDefinir from './coordonateur/components/ClasseDefinir';
 import TimeTableFormat from './coordonateur/components/TimeTableFormat';
 import Questionnaire from './enseignant/Questionnaire';
-import Files from './FIles'
+import TeacherForum from './enseignant/TeacherForum';
+import FIles from './FIles'
+import TeacherNotes from './enseignant/TeacherNotes';
 // import TimeTableLine from './coordonateur/components/TimeTableLine';
 // import TimeTableFormat from './coordonateur/components/TimeTableFormat';
 
@@ -28,7 +30,7 @@ class App extends React.Component {
             <
             Switch >
             <
-            Route exact path = '/' > < Files / > < /Route > <
+            Route exact path = '/' > < TeacherNotes / > < /Route > <
             Route exact path = '/restpwd' > < ForgotPassword / > < /Route> <
             Route exact path = '/sendMail' > < SendMail / > < /Route> <
             Route exact path = '/signup' > < SignUp / > < /Route> <

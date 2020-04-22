@@ -14,14 +14,26 @@ export default class FIles extends Component {
                 this.state.file,
                 this.state.file.name
             )
-            console.log(formData)
+            console.log(this.state.file.name)
         })
+    }
+
+    handleClick=(e)=>{
+        let btn = document.getElementById('fileBtn')
+        btn.type='file'
+        console.log(e.target.files[0])
+    }
+
+    handleOnBlur=()=>{
+        let btn = document.getElementById('fileBtn')
+        btn.type='button'
     }
 
     render() {
         return (
             <div>
-                <input type='file' onChange={this.handleFileChange} />
+                <button onClick={this.handleClick} id='fileBtns'><i className='fa fa-paperclip' /></button>
+                <input type='button' value='button' id='fileBtn' onFocus={this.handleClick} onBlur={this.handleOnBlur} />
             </div>
         )
     }

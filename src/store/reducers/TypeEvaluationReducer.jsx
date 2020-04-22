@@ -3,6 +3,7 @@ const initState = {
         {idTypeEvaluation:1, nomTypeEvaluation:'CC'},
         {idTypeEvaluation:2, nomTypeEvaluation:'Examen'},
         {idTypeEvaluation:3, nomTypeEvaluation:'Devoir'},
+        {idTypeEvaluation:4, nomTypeEvaluation:'Rattrapage'},
     ]
 }
 
