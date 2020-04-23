@@ -24,7 +24,9 @@ export default class ClasseCoordo extends Component {
 
     render() {
         return (
-                this.styleClasses()
+            <div className="theClasses">
+                {this.styleClasses()}
+            </div>
         )
     }
 }
