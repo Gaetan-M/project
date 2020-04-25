@@ -140,6 +140,11 @@ class TeacherNotes extends Component {
 
     render() {
         return (
+            //You have done everything asked by the interface. but the one thing this interface prevents the teacher from doing is publishing
+            //his notes. if the teacher cannot publish his notes, then rest assured
+            //neither the students nor the coordo will be able to see any notes. 
+            //hence you have to work out the problem of teachers publishing their notes.
+            //PS: Boston always finds a way out ;)
             <div>
                 {this.personnelSubjectSelect()}
                 {this.subjectClassesSelect()}

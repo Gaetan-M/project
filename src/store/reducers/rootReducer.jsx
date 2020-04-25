@@ -3,6 +3,7 @@ import { combineReducers } from 'redux'
 import BatimentReducer from './BatimentReducer';
 import ClasseReducer from './ClasseReducer';
 import CoordonateurReducer from './CoordonateurReducer';
+import CopieReducer from './CopieReducer';
 import CoursReducer from './CoursReducer';
 import EtudiantReducer from './EtudiantReducer';
 import EvaluationReducer from './EvaluationReducer';
@@ -22,6 +23,7 @@ const rootReducer = combineReducers({
     Batiment:BatimentReducer,
     Classe: ClasseReducer,
     Coordonateur: CoordonateurReducer,
+    Copie: CopieReducer,
     Cour: CoursReducer,
     Etudiant: EtudiantReducer,
     Evaluation: EvaluationReducer,

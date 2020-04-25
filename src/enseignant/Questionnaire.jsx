@@ -292,6 +292,12 @@ class Questionnaire extends Component {
 
     render() {
         return (
+            //As good as we can add questions to a questionnaire, it will be very good if we could also delete a question.
+            //As of now, there is no mechanism put in place to delete a question from a questionnaire.
+            //You'll need to work that out
+            //PS: Boston always finds a way out ;)
+
+            //You haven't handled the duree of an evaluation or the date limit of a devoir. you'll have to add that.
             <div>
                 {this.getToughtSubjects()}
                 {this.state.concernedSubject!==''?
