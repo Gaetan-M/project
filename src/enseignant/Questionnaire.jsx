@@ -27,6 +27,12 @@ class Questionnaire extends Component {
 
     handleSaveEvaluation=()=>{
         let evaluationToCreate={...this.state.editableEvaluation, idEvaluation:this.props.evaluations.length+1}
+        let index=1
+        let tempQuestions = evaluationToCreate.questions.map(question=>{
+            question.index=index++
+            return question
+        })
+        evaluationToCreate.questions = tempQuestions
         /*
             In the evaluation collection, the new document to create is: evaluationToCreate
 
@@ -254,7 +260,7 @@ class Questionnaire extends Component {
                     </div>
                     <textarea className='indications' placeholder='Indications' id={index+'_indications'} onChange={this.handleTextareaChange} value={question.indications} />
                     <textarea className='theQuestion' placeholder='Entrer la question' id={index+'_question'} onChange={this.handleTextareaChange} value={question.question} />
-                    {/* Upload and image and display the image on a 100 x 100 format here */}
+                    {/* download image and display the image on a 100 x 100 format here */}
                     <textarea className='answer' id={index+'_answer'} onChange={this.handleTextareaChange}placeholder='Entrer la repose a cette question' value={question.answer} />
                     {
                         questionType==='QCM'?(

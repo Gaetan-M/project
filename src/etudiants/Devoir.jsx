@@ -20,28 +20,16 @@ class Devoir extends Component {
 
     getAllDueDevoirs=()=>{
         let subjectIDs=this.getAllIdCours()
-        let devoirs = subjectIDs.map(idSubject=>this.props.evaluations.filter(evaluation=>evaluation.idCour===idSubject && new Date(evaluation.deadLine)>new Date()))
+        let devoirs = subjectIDs.map(idSubject=>this.props.evaluations.filter(evaluation=>evaluation.idCour===idSubject && new Date(evaluation.deadLine)>=new Date() && evaluation.idTypeEvaluation===3))
         let theDevoirs = []
         devoirs.map(subjectDevoir=>subjectDevoir.map(devoir=>theDevoirs.push(devoir)))
         return theDevoirs
     }
 
-    onEnvoyerClick=(e)=>{
-        /*
-            1. Get the copie with id: toSubmitCopie.idCopie
-            2. change its propositions with this.state.newPropositions
-            3. change its submitted to true.
-            4. then update this copie in the backend
-
-            5. if the copie doesn't exit, then create a new copie
-            6. then add this copie to the backend.
-        */
-    }
-
     onContinuerClick=(e)=>{
         
          this.setState({idEvaluation:Number(e.target.id.split('_')[1])})
-         let copie = this.props.copies.find(copie=>copie.idEvaluation===Number(e.target.id.split('_')[1]) && copie.idEtudiant===this.state.idEtudiant)
+         let copie = this.props.copies.find(copie=>copie.idEvaluation===Number(e.target.id.split('_')[1]) && copie.idEtudiant===this.state.idEtudiant && copie.idTypeEvaluation===3)
          this.setState({newPropositions:copie.propositions})
         /*
             1. get the copie with idEvaluation and idEtudiant equal to this.state.idEvaluation and this.state.idEtudiant
@@ -92,7 +80,7 @@ class Devoir extends Component {
                                 ))}
                             </form>
                         ):(
-                            <textarea className='askedQuestionAnswer' id={index+'_proposition'} onChange={this.handlePropositionChange} placeholder='Entrez la reponse' value={questionProposition} />
+                            <textarea className='askedQuestionAnswer' id={'option_'+index+'_'+optionIndex} onChange={this.handlePropositionChange} placeholder='Entrez la reponse' value={questionProposition} />
                         )
                         }
                     </div>
@@ -107,7 +95,7 @@ class Devoir extends Component {
     }
 
     onSaveClick=(e)=>{
-        let findCopie = this.props.copies.find(copie=>copie.idEvaluation === this.state.idEvaluation && copie.idEtudiant===this.state.idEtudiant)
+        let findCopie = this.props.copies.find(copie=>copie.idEvaluation === this.state.idEvaluation && copie.idEtudiant===this.state.idEtudiant && copie.idTypeEvaluation===3)
 
         if(findCopie!==undefined){
             findCopie.propositions=this.state.newPropositions
@@ -125,6 +113,7 @@ class Devoir extends Component {
                 idEvaluation:this.state.idEvaluation,
                 idEtudiant:this.state.idEtudiant,
                 dateRemis:new Date().toDateString(),
+                idTypeEvaluation: 3,
                 propositions:this.state.newPropositions,
                 submitted:e.target.id==='sendCopie'}
             /*
@@ -144,7 +133,7 @@ class Devoir extends Component {
         return devoirs.map(devoir=>{
             let nomCour= this.props.cours.find(cour=>cour.idCour===devoir.idCour).nomCours
             let dateLimite = new Date(devoir.deadLine).toDateString()
-            let brouillon = this.props.copies.find(copie=>copie.idEvaluation===devoir.idEvaluation && copie.idEtudiant===this.state.idEtudiant)
+            let brouillon = this.props.copies.find(copie=>copie.idEvaluation===devoir.idEvaluation && copie.idEtudiant===this.state.idEtudiant && copie.idTypeEvaluation===3)
             let display = brouillon!==undefined?(brouillon.submitted):null
             brouillon = brouillon!==undefined?('brouillon'):null
 
@@ -163,6 +152,17 @@ class Devoir extends Component {
                 </div>
             )
         })
+    }
+
+    onChange=(e)=>{
+        let daet = document.getElementById('date').value
+        daet = daet.split('-')
+        let time = document.getElementById('time').value
+        time= time.split(':')
+        let dateTime = new Date(daet[0],daet[1],daet[2],time[0],time[1])
+        dateTime=dateTime+''
+        dateTime=dateTime.split(' G')[0]
+        console.log(dateTime)
     }
 
     render() {
