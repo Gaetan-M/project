@@ -258,7 +258,7 @@ class Examen extends Component {
             }
         })
 
-        let toBeUploaded = {idCopie:this.props.copies.length, idEvaluation:this.state.idEvaluation, idEtudiant:this.state.idEvaluation, idTypeEvaluation:evaluation.idTypeEvaluation, proposition:finalPropositions}
+        let toBeUploaded = {idCopie:this.props.copies.length, idEvaluation:this.state.idEvaluation, idEtudiant:this.state.idEvaluation, idTypeEvaluation:evaluation.idTypeEvaluation, propositions:finalPropositions}
         /*
             The collection of interest here is the Copies collection. 
             1. The object to be uploaded to the Copies collection is: toBeUploaded

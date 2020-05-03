@@ -26,6 +26,7 @@ import StudentNotes from './etudiants/StudentNotes';
 import PublierNoteExamen from './coordonateur/components/PublierNoteExamen';
 import Devoir from './etudiants/Devoir';
 import Examen from './etudiants/Examen';
+import CorrigerEvaluation from './enseignant/CorrigerEvaluation';
 // import TimeTableLine from './coordonateur/components/TimeTableLine';
 // import TimeTableFormat from './coordonateur/components/TimeTableFormat';
 
@@ -36,7 +37,7 @@ class App extends React.Component {
             <
             Switch >
             <
-            Route exact path = '/' > < Examen / > < /Route > <
+            Route exact path = '/' > < CorrigerEvaluation / > < /Route > <
             Route exact path = '/restpwd' > < ForgotPassword / > < /Route> <
             Route exact path = '/sendMail' > < SendMail / > < /Route> <
             Route exact path = '/signup' > < SignUp / > < /Route> <
