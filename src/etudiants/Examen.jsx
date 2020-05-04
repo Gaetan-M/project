@@ -121,6 +121,7 @@ class Examen extends Component {
 
                 let theMinutes = 0
                 theMinutes = Number(timeLeft.split(':')[1])-1
+                theMinutes = theMinutes<10?('0'+theMinutes):theMinutes
 
                 timeLeft = <div className='timeleft'>
                     <span className='dans'>Dans: </span>
@@ -224,7 +225,7 @@ class Examen extends Component {
             })
             let theMinutes = 0
             theMinutes = Number(composTimeLeft.split(':')[1]) - 1
-            
+            theMinutes = theMinutes<10?('0'+theMinutes):theMinutes
             if(Number(composTimeLeft.split(':')[0])===0 && Number(composTimeLeft.split(':')[1])===0){
                 this.handleRemettreClick()
             }else{
