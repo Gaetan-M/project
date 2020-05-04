@@ -1,7 +1,9 @@
 import React, { Component } from 'react'
-
+import io from 'socket.io-client'
 import './StudentForum.css'
 import { connect } from 'react-redux'
+
+const socket=io.connect('http://localhost:3001');
 
 class StudentForum extends Component {
     state={
@@ -9,6 +11,9 @@ class StudentForum extends Component {
         idCour:1,
         message:'',
         refFile:'',
+        messages:[],
+        forum:{messages:[ ]},
+        supports:[]
     }
 
     fileTypeIcons = {
@@ -37,7 +42,7 @@ class StudentForum extends Component {
         "txt":"file-text", "pdf":"file-pdf"
     }
 
-    getForumMessages=()=>this.props.forums.find(forum=>forum.idCour===this.state.idCour).messages
+    getForumMessages=()=>this.state.forum.messages
 
     getForumChatDates=()=>{
         let forumMessages = this.getForumMessages()
@@ -88,6 +93,37 @@ class StudentForum extends Component {
             </div>
         )
     }
+    displayMessageBroadcast=(message, key)=>{
+       let nomSender =''
+       let messageClassName = ''
+       if(message.isEnseignant) {
+           nomSender = this.props.personnels.find(personnel=>personnel.idPersonnel===this.props.cours.find(cour=>cour.idCour===this.state.idCour).idEnseignant)
+           messageClassName='teacherMessage'
+        }else if(message.idEtudiant===this.state.idEtudiant){
+            nomSender = {nom:'Moi', prenom:''}
+            messageClassName='myMessage'
+        }else{
+            nomSender=this.props.etudiants.find(etudiant=>etudiant.idEtudiant===message.idEtudiant)
+            messageClassName='othersMessage'
+        }
+        let messageTime= message.dateTime.split(' ')[4]
+        nomSender= nomSender.nom +' '+ nomSender.prenom
+
+        //if refFile is not empty, then it means there is a file for this message
+        //if its an image, then display the image in the img tag
+        //else make the ref downloadable on click
+        //adjust the return below to either be an image or a link that downloads a ref on Click
+        let refFile = message.refFile!==''?(<img src='' alt='hell' className='messageImage' />):null
+
+        return (
+            <div key={key} className={messageClassName+ ' message'}>
+                <span className='messageSender'>{nomSender}</span>
+                <span className='messageRef'>{refFile}</span>
+                <span className='messageContent'>{message.message}</span>
+                <span className='messageTime'>{messageTime}</span>
+            </div>
+        )
+    }
 
     displayForumMessagesPerDatePerTime=()=>{
         let chatDates = this.getForumChatDates()
@@ -113,6 +149,7 @@ class StudentForum extends Component {
 
     handleNewMessageChange=(e)=>{
         this.setState({message:e.target.value})
+        console.log(this.state.message)
     }
 
     handleSendMessage=()=>{
@@ -122,6 +159,10 @@ class StudentForum extends Component {
             let dateTime = new Date()+' '
             dateTime = dateTime.split(' G')[0]
             let newMessage = {date:date, dateTime:dateTime, isEnseignant:true, message:this.state.message, refFile:this.state.refFile, idEtudiant:''}
+            
+            socket.emit('newMessage',newMessage)
+            let Forum=this.state.forum;
+            Forum.messages.push(newMessage)
             //In the forum collection, update the forum with id: this.state.idCours
             //add the message: newMessage to the messages array of this forum
             //After adding the message, fetch the data back to the forums in the state.
@@ -151,13 +192,14 @@ class StudentForum extends Component {
     )
 
     showSupportCours=()=>{
-        let supports = this.props.cours.find(cour=>cour.idCour===this.state.idCour).refSupports
+        // let supports = this.props.cours.find(cour=>cour.idCour===this.state.idCour).refSupports
+           let supports=this.state.supports 
         return (
             <div className="supportsCours">
                 {supports.map(support=>(
-                    <div className='support' key={support.ref}>
-                        <i className={'fa fa-'+(this.fileTypeIcons[support.nameFile.split('.')[support.nameFile.split('.').length-1]] || 'file' )+'-o'} />
-                        <span className='nomSupport'>{support.nameFile}</span>
+                    <div className='support' key={support._id}>
+                        <i className={'fa fa-'+(this.fileTypeIcons[support.filename.split('.')[support.filename.split('.').length-1]] || 'file' )+'-o'} />
+                        <span className='nomSupport'><a href={"http://localhost:3001/files/"+support.filename} >{support.filename}</a></span>
                         <i className='fa fa-download' />
                     </div>
                 ))}
@@ -177,8 +219,62 @@ class StudentForum extends Component {
             </div>
         )
     }
+    getData(){
+        fetch('http://localhost:3001/forum',{
+            method:'get',
+            headers:{'content-type':'application/json'}
+        })
+        .then(res=>res.json())
+        .then(async data=>{
+           await this.props.dispatch({type: "CREATE_ETUDIANT", payload: data.personnel})
+           await this.props.dispatch({type: "CREATE_BATIMENT", payload: data.Forum})
+           await this.props.dispatch({type: "CREATE_COUR", payload: data.cours})
+           await this.props.dispatch({type: "CREATE_PERSONNEL", payload: data.personnel})
+            console.log(data)})
+        .catch(error=>console.log(error))
+    }
+    loadData(){
+       fetch('http://localhost:3001/files',{
+        method:'GET',
+        headers:{'content-type':'application/json'}
+       }).then(response=>response.json())
+       .then(data=>{this.setState({supports:data})
+        console.log(data)
+        })
+       .catch(error=>console.log(error))
+    }
+componentDidMount(){
+    console.log('componentDidMount',this.state.forum)
+    this.getData()
+  socket.emit('idCour','5e9d91c4820e0b2fbf4747c0')
+      this.onSocket()
+    this.loadData()
+}
+init(){
+
+      socket.on('initilisation',async (data)=>{
+        console.log('init',data.message[0])
+        this.setState({forum:data.message[0]})
+
+    })
+  }
+  onSocket(){
+    let Forums=[{messages:[]}]
+    let For:{};
+     socket.on('newMessage',async (data)=>{
+    console.log('before',this.state.forum)
+    For=this.state.forum
+    For.messages.push(data)
+    this.setState({forum:For})
+     console.log('after',this.state.forum)
+     }) 
+}
+
 
     render() {
+            this.init();
+console.log('props:',this.props)
+console.log('state',this.state.forum)
         return (
             <div>
                 {this.displayCoursHeader()}
@@ -189,7 +285,6 @@ class StudentForum extends Component {
         )
     }
 }
-
 const mapStateToProps=(state)=>{
     return{
         forums: state.Forum.forums,

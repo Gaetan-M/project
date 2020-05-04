@@ -1,9 +1,10 @@
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
-
+import io from 'socket.io-client'
 import './TeacherForum.css'
 import { connect } from 'react-redux'
 
+const socket=io.connect('http://localhost:3001')
 class TeacherForum extends Component {
     state={
         /*
@@ -24,6 +25,9 @@ class TeacherForum extends Component {
         refFile:'',
         message:'',
         newSupport:'',
+        supports:[],
+        messages:[],
+        forum:{messages:[ ]}
     }
     
     fileTypeIcons = {
@@ -52,7 +56,7 @@ class TeacherForum extends Component {
         "txt":"file-text", "pdf":"file-pdf"
     }
 
-    getForumMessages=()=>this.props.forums.find(forum=>forum.idCour===this.state.idCour).messages
+    getForumMessages=()=>this.state.forum.messages
 
     getForumChatDates=()=>{
         let forumMessages = this.getForumMessages()
@@ -73,6 +77,8 @@ class TeacherForum extends Component {
     }
 
     displayMessage=(message, key)=>{
+
+
        let nomSender =''
        let messageClassName = ''
        if(message.isEnseignant) {
@@ -104,6 +110,7 @@ class TeacherForum extends Component {
     displayForumMessagesPerDatePerTime=()=>{
         let chatDates = this.getForumChatDates()
         let messages = this.getForumMessages()
+
         let key=0
         return chatDates.map(chatDate=>{
             let dateMessages = messages.filter(message=>message.date===chatDate).sort((a,b)=>{
@@ -134,6 +141,10 @@ class TeacherForum extends Component {
             let dateTime = new Date()+' '
             dateTime = dateTime.split(' G')[0]
             let newMessage = {date:date, dateTime:dateTime, isEnseignant:true, message:this.state.message, refFile:this.state.refFile, idEtudiant:''}
+            
+            socket.emit('newMessage',newMessage)
+            let Forum=this.state.forum;
+            Forum.messages.push(newMessage)
             //In the forum collection, update the forum with id: this.state.idCours
             //add the message: newMessage to the messages array of this forum
             //After adding the message, fetch the data back to the forums in the state.
@@ -146,7 +157,6 @@ class TeacherForum extends Component {
             this.setState({message:'', refFile:''})
         }else alert('write a message or send a file')
     }
-
     handleAttachFile=(e)=>{
         e.preventDefault()
     }
@@ -174,13 +184,14 @@ class TeacherForum extends Component {
     }
 
     showSupportCours=()=>{
-        let supports = this.props.cours.find(cour=>cour.idCour===this.state.idCour).refSupports
+        // let supports = this.props.cours.find(cour=>cour.idCour===this.state.idCour).refSupports
+         let supports=this.state.supports
         return (
             <div className="supportsCours">
                 {supports.map(support=>(
-                    <div className='support' key={support.ref}>
-                        <i className={'fa fa-'+(this.fileTypeIcons[support.nameFile.split('.')[support.nameFile.split('.').length-1]] || 'file' )+'-o'} />
-                        <span className='nomSupport'>{support.nameFile}</span>
+                    <div className='support' key={support._id}>
+                        <i className={'fa fa-'+(this.fileTypeIcons[support.filename.split('.')[support.filename.split('.').length-1]] || 'file' )+'-o'} />
+                        <span className='nomSupport'><a href={"http://localhost:3001/files/"+support.filename} >{support.filename}</a></span>
                     </div>
                 ))}
             </div>
@@ -194,13 +205,23 @@ class TeacherForum extends Component {
     uploadSupport=()=>{
         let formData = new FormData()
         formData.append(
-            'courseFile',
-            this.state.newSupport,
-            this.state.newSupport.name
+            'file',
+            this.state.newSupport
         )
         let coursObject=this.props.cours.find(cour=>cour.idCour===this.state.idCour)
         let ref =coursObject.codeCours+'_'+(coursObject.refSupports.length+1)
         let newFormRef = {nameFile:this.state.newSupport.name, ref:ref}
+        
+        fetch('http://localhost:3001/files/upload',{
+        method:'POST',
+        body:formData,
+        // headers:{'content-type':'application/json'}
+       }).then(response=>response.json())
+       .then(data=>{
+        console.log(data)
+        })
+       .catch(error=>console.log(error))
+       console.log(this.state.newSupport.name)
         /*
             update the cours with idCour: this.state.idCour by adding newFormRef to its refSupport object
             add this.state.newSupport to the gridFS or i don't know what.
@@ -226,8 +247,59 @@ class TeacherForum extends Component {
             </div>
         )
     }
+    loadData(){
+       fetch('http://localhost:3001/files',{
+        method:'GET',
+        headers:{'content-type':'application/json'}
+       }).then(response=>response.json())
+       .then(data=>{this.setState({supports:data})
+        console.log(data)
+        })
+       .catch(error=>console.log(error))
+    }
+        getData(){
+        fetch('http://localhost:3001/forum',{
+            method:'get',
+            headers:{'content-type':'application/json'}
+        })
+        .then(res=>res.json())
+        .then(async data=>{
+           await this.props.dispatch({type: "CREATE_ETUDIANT", payload: data.personnel})
+           await this.props.dispatch({type: "CREATE_BATIMENT", payload: data.Forum})
+           await this.props.dispatch({type: "CREATE_COUR", payload: data.cours})
+           await this.props.dispatch({type: "CREATE_PERSONNEL", payload: data.personnel})
+            console.log(data)})
+        .catch(error=>console.log(error))
+    }
+init(){
+
+      socket.on('initilisation',async (data)=>{
+        this.setState({forum:data.message[0]})
+        console.log('state init',this.state.forum)
+    })
+  }
+  onSocket(){
+    let Forums=[{messages:[]}]
+    let For:{};
+    socket.on('newMessage',async (data)=>{
+    console.log('broadcast',data)
+    For=this.state.forum
+    For.messages.push(data)
+    this.setState({forum:For})
+     }) 
+}
+componentDidMount(){
+    console.log('componentDidMount',this.state.forum)
+    this.getData()
+    //on devra passer ici l'id du cour concerné
+    socket.emit('idCour','5e9d91c4820e0b2fbf4747c0')
+    this.onSocket()
+    this.loadData()
+
+}
 
     render() {
+            this.init();
         return (
             <div>
                 {this.afficheCourHeader()}

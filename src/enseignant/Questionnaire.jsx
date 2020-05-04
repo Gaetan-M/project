@@ -27,12 +27,6 @@ class Questionnaire extends Component {
 
     handleSaveEvaluation=()=>{
         let evaluationToCreate={...this.state.editableEvaluation, idEvaluation:this.props.evaluations.length+1}
-        let index=1
-        let tempQuestions = evaluationToCreate.questions.map(question=>{
-            question.index=index++
-            return question
-        })
-        evaluationToCreate.questions = tempQuestions
         /*
             In the evaluation collection, the new document to create is: evaluationToCreate
 
@@ -260,7 +254,7 @@ class Questionnaire extends Component {
                     </div>
                     <textarea className='indications' placeholder='Indications' id={index+'_indications'} onChange={this.handleTextareaChange} value={question.indications} />
                     <textarea className='theQuestion' placeholder='Entrer la question' id={index+'_question'} onChange={this.handleTextareaChange} value={question.question} />
-                    {/* download image and display the image on a 100 x 100 format here */}
+                    {/* Upload and image and display the image on a 100 x 100 format here */}
                     <textarea className='answer' id={index+'_answer'} onChange={this.handleTextareaChange}placeholder='Entrer la repose a cette question' value={question.answer} />
                     {
                         questionType==='QCM'?(
@@ -298,12 +292,6 @@ class Questionnaire extends Component {
 
     render() {
         return (
-            //As good as we can add questions to a questionnaire, it will be very good if we could also delete a question.
-            //As of now, there is no mechanism put in place to delete a question from a questionnaire.
-            //You'll need to work that out
-            //PS: Boston always finds a way out ;)
-
-            //You haven't handled the duree of an evaluation or the date limit of a devoir. you'll have to add that.
             <div>
                 {this.getToughtSubjects()}
                 {this.state.concernedSubject!==''?

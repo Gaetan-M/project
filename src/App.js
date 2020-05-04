@@ -24,28 +24,22 @@ import StudentTimetable from './etudiants/StudentTimetable';
 import StudentForum from './etudiants/StudentForum';
 import StudentNotes from './etudiants/StudentNotes';
 import PublierNoteExamen from './coordonateur/components/PublierNoteExamen';
-import Devoir from './etudiants/Devoir';
-import Examen from './etudiants/Examen';
-import CorrigerEvaluation from './enseignant/CorrigerEvaluation';
 // import TimeTableLine from './coordonateur/components/TimeTableLine';
 // import TimeTableFormat from './coordonateur/components/TimeTableFormat';
 
 class App extends React.Component {
     render() {
-        return ( <
-            Router >
-            <
-            Switch >
-            <
-            Route exact path = '/' > < Examen / > < /Route > <
-            Route exact path = '/restpwd' > < ForgotPassword / > < /Route> <
-            Route exact path = '/sendMail' > < SendMail / > < /Route> <
-            Route exact path = '/signup' > < SignUp / > < /Route> <
-            Route exact path = '/signin' > < SignIn / > < /Route> <
-            Redirect to = '/' / >
-            hello <
-            /Switch> < /
-            Router >
+        return ( <Router>
+            <Switch>
+            <Route exact path = '/' > <TeacherForum /> </Route> 
+            <Route exact path = '/restpwd' > <ForgotPassword /> </Route> 
+            <Route exact path = '/sendMail' > <SendMail /> </Route> 
+            <Route exact path = '/signup' > <SignUp /> </Route> 
+            <Route exact path = '/signin' > <SignIn /> </Route> 
+            <Redirect to = '/' />
+            hello 
+            </Switch> 
+            </Router>
         );
     }
 }

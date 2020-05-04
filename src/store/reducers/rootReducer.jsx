@@ -3,7 +3,6 @@ import { combineReducers } from 'redux'
 import BatimentReducer from './BatimentReducer';
 import ClasseReducer from './ClasseReducer';
 import CoordonateurReducer from './CoordonateurReducer';
-import CopieReducer from './CopieReducer';
 import CoursReducer from './CoursReducer';
 import EtudiantReducer from './EtudiantReducer';
 import EvaluationReducer from './EvaluationReducer';
@@ -14,7 +13,7 @@ import NoteReducer from './NoteReducer';
 import PersonnelReducer from './PersonnelReducer';
 import RoleReducer from './RoleReducer';
 import TeacherReducer from './TeacherReducer';
-import TimetableReducer from './TimetableReducer';
+import TimetableReducer from './TimeTableReducer';
 import TroncCommunReducer from './TroncCommunReducer';
 import TypeEvaluationReducer from './TypeEvaluationReducer';
 import TypeQuestionReducer from './TypeQuestionReducer';
@@ -23,7 +22,6 @@ const rootReducer = combineReducers({
     Batiment:BatimentReducer,
     Classe: ClasseReducer,
     Coordonateur: CoordonateurReducer,
-    Copie: CopieReducer,
     Cour: CoursReducer,
     Etudiant: EtudiantReducer,
     Evaluation: EvaluationReducer,
