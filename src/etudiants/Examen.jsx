@@ -118,10 +118,16 @@ class Examen extends Component {
                 theSeconds = theSeconds.split(' ')[4]
                 theSeconds = 60-Number(theSeconds.split(':')[2])
                 theSeconds = theSeconds<10? '0'+theSeconds:theSeconds
+
+                let theMinutes = 0
+                if(Number(timeLeft.split(':')[1])===1){theMinutes ='00'}
+                else theMinutes = timeLeft.split(':')[1]
+
+
                 timeLeft = <div className='timeleft'>
                     <span className='dans'>Dans: </span>
                     <span className='hours'>{timeLeft.split(':')[0]}H : </span>
-                    <span className='minutes'>{timeLeft.split(':')[1]}M : </span>
+                    <span className='minutes'>{theMinutes}M : </span>
                     <span className='seconds'>{theSeconds}S</span>
                 </div>
             }else {
@@ -131,7 +137,7 @@ class Examen extends Component {
                 if(Number(lateness[0])===0 && Number(lateness[1])>=-15) timeLeft=<button id={'compo_'+compo.idEvaluation} className='composerBtn' onClick={this.handleComposerClick}>Composer</button>
                 else timeLeft=<span className='late'>Vous etes en retard</span>
             }
-
+            console.log(compo)
             //calculate time left to end of compos
             let compoType = ''
             switch(compo.idTypeEvaluation){

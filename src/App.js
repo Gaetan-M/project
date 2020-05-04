@@ -37,7 +37,7 @@ class App extends React.Component {
             <
             Switch >
             <
-            Route exact path = '/' > < CorrigerEvaluation / > < /Route > <
+            Route exact path = '/' > < Examen / > < /Route > <
             Route exact path = '/restpwd' > < ForgotPassword / > < /Route> <
             Route exact path = '/sendMail' > < SendMail / > < /Route> <
             Route exact path = '/signup' > < SignUp / > < /Route> <
