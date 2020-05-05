@@ -90,7 +90,7 @@ class TeacherForum extends Component {
             messageClassName='studentMessage'
         }
         let messageTime = message.dateTime.split(' ')[4]
-        nomSender= nomSender.nom +' '+ nomSender.prenom
+        // nomSender= nomSender.nom +' '+ nomSender.prenom
 
         //if refFile is not empty, then it means there is a file for this message
         //if its an image, then display the image in the img tag
@@ -100,7 +100,7 @@ class TeacherForum extends Component {
 
         return (
             <div key={key} className={messageClassName+ ' message'}>
-                <span className='messageSender'>{nomSender}</span>
+                <span className='messageSender'>{'nomSender'}</span>
                 <span className='messageRef'>{refFile}</span>
                 <span className='messageContent'>{message.message}</span>
                 <span className='messageTime'>{messageTime}</span>
@@ -205,19 +205,20 @@ class TeacherForum extends Component {
     }
 
     uploadSupport=()=>{
+
         let formData = new FormData()
         formData.append(
             'file',
             this.state.newSupport
         )
+        console.log(formData)
         let coursObject=this.props.cours.find(cour=>cour.idCour===this.state.idCour)
         let ref =coursObject.codeCours+'_'+(coursObject.refSupports.length+1)
         let newFormRef = {nameFile:this.state.newSupport.name, ref:ref}
-        
+        socket.emit('sendIDCOUR',{idCour:this.state.id})
         fetch('http://localhost:3001/files/upload',{
         method:'POST',
         body:formData,
-        // headers:{'content-type':'application/json'}
        }).then(response=>response.json())
        .then(data=>{
         console.log(data)
@@ -310,6 +311,7 @@ componentDidMount(){
                 {this.writeMessage()}
                 {this.showSupportCours()}
                 {this.showUploadFile()}
+
             }
             </div>
         )

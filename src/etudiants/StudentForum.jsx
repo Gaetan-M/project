@@ -77,7 +77,7 @@ class StudentForum extends Component {
             messageClassName='othersMessage'
         }
         let messageTime = message.dateTime.split(' ')[4]
-        nomSender= nomSender.nom +' '+ nomSender.prenom
+        // nomSender= nomSender.nom +' '+ nomSender.prenom
 
         //if refFile is not empty, then it means there is a file for this message
         //if its an image, then display the image in the img tag
@@ -87,7 +87,7 @@ class StudentForum extends Component {
 
         return (
             <div key={key} className={messageClassName+ ' message'}>
-                <span className='messageSender'>{nomSender}</span>
+                <span className='messageSender'>{'nomSender'}</span>
                 <span className='messageRef'>{refFile}</span>
                 <span className='messageContent'>{message.message}</span>
                 <span className='messageTime'>{messageTime}</span>
@@ -159,7 +159,7 @@ class StudentForum extends Component {
             date = date.toDateString()
             let dateTime = new Date()+' '
             dateTime = dateTime.split(' G')[0]
-            let newMessage = {date:date, dateTime:dateTime, isEnseignant:true, message:this.state.message, refFile:this.state.refFile, idEtudiant:''}
+            let newMessage = {date:date, dateTime:dateTime, isEnseignant:false, message:this.state.message, refFile:this.state.refFile, idEtudiant:'true'}
             
             socket.emit('newMessage',newMessage)
             let Forum=this.state.forum;
