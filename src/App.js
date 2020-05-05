@@ -31,7 +31,7 @@ class App extends React.Component {
     render() {
         return ( <Router>
             <Switch>
-            <Route exact path = '/' > <TeacherForum /> </Route> 
+            <Route exact path = '/' > <StudentForum /> </Route> 
             <Route exact path = '/restpwd' > <ForgotPassword /> </Route> 
             <Route exact path = '/sendMail' > <SendMail /> </Route> 
             <Route exact path = '/signup' > <SignUp /> </Route> 

@@ -27,7 +27,8 @@ class TeacherForum extends Component {
         newSupport:'',
         supports:[],
         messages:[],
-        forum:{messages:[ ]}
+        forum:{messages:[ ]},
+        id:'5e9d91c4820e0b2fbf4747c0'
     }
     
     fileTypeIcons = {
@@ -186,12 +187,13 @@ class TeacherForum extends Component {
     showSupportCours=()=>{
         // let supports = this.props.cours.find(cour=>cour.idCour===this.state.idCour).refSupports
          let supports=this.state.supports
+         console.log(supports)
         return (
             <div className="supportsCours">
                 {supports.map(support=>(
-                    <div className='support' key={support._id}>
-                        <i className={'fa fa-'+(this.fileTypeIcons[support.filename.split('.')[support.filename.split('.').length-1]] || 'file' )+'-o'} />
-                        <span className='nomSupport'><a href={"http://localhost:3001/files/"+support.filename} >{support.filename}</a></span>
+                    <div className='support' key={support.supports._id}>
+                        <i className={'fa fa-'+(this.fileTypeIcons[support.supports.filename.split('.')[support.supports.filename.split('.').length-1]] || 'file' )+'-o'} />
+                        <span className='nomSupport'><a href={"http://localhost:3001/files/"+support.supports.filename} >{support.supports.filename}</a></span>
                     </div>
                 ))}
             </div>
@@ -250,7 +252,7 @@ class TeacherForum extends Component {
     loadData(){
        fetch('http://localhost:3001/files',{
         method:'GET',
-        headers:{'content-type':'application/json'}
+        headers:{'content-type':'application/json',id:this.state.id}
        }).then(response=>response.json())
        .then(data=>{this.setState({supports:data})
         console.log(data)
@@ -302,11 +304,13 @@ componentDidMount(){
             this.init();
         return (
             <div>
-                {this.afficheCourHeader()}
+                {
+                this.afficheCourHeader()}
                 {this.displayForumMessagesPerDatePerTime()}
                 {this.writeMessage()}
                 {this.showSupportCours()}
                 {this.showUploadFile()}
+            }
             </div>
         )
     }

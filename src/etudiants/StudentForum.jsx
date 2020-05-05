@@ -13,9 +13,10 @@ class StudentForum extends Component {
         refFile:'',
         messages:[],
         forum:{messages:[ ]},
-        supports:[]
+        supports:[],
+        id:'5e9d91c4820e0b2fbf4747c0'
     }
-
+//Note:id ici represente l'id du cour courant il est passé dans le fetch
     fileTypeIcons = {
         "mov":"file-video", "qt":"file-video", "rm":"file-video", "wmn":"file-video", "wmf":"file-video", "mkv":"file-video", "mka":"file-video", "mks":"file-video", "mk3d":"file-video",
         "mp4":"file-video", "mp4a":"file-video", "mp4v":"file-video", "m4p":"file-video", "m4v":"file-video", "mpg":"file-video", "mpeg":"file-video", "m2p":"file-video", "ps":"file-video",
@@ -197,9 +198,9 @@ class StudentForum extends Component {
         return (
             <div className="supportsCours">
                 {supports.map(support=>(
-                    <div className='support' key={support._id}>
-                        <i className={'fa fa-'+(this.fileTypeIcons[support.filename.split('.')[support.filename.split('.').length-1]] || 'file' )+'-o'} />
-                        <span className='nomSupport'><a href={"http://localhost:3001/files/"+support.filename} >{support.filename}</a></span>
+                    <div className='support' key={support.supports._id}>
+                        <i className={'fa fa-'+(this.fileTypeIcons[support.supports.filename.split('.')[support.supports.filename.split('.').length-1]] || 'file' )+'-o'} />
+                        <span className='nomSupport'><a href={"http://localhost:3001/files/"+support.supports.filename} >{support.supports.filename}</a></span>
                         <i className='fa fa-download' />
                     </div>
                 ))}
@@ -236,7 +237,7 @@ class StudentForum extends Component {
     loadData(){
        fetch('http://localhost:3001/files',{
         method:'GET',
-        headers:{'content-type':'application/json'}
+        headers:{'content-type':'application/json',id:this.state.id}
        }).then(response=>response.json())
        .then(data=>{this.setState({supports:data})
         console.log(data)
